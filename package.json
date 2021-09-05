@@ -1,0 +1,48 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "http://localhost:3000/client",
+  "dependencies": {
+    "@rmwc/button": "^6.1.4",
+    "@rmwc/formfield": "^6.1.4",
+    "@rmwc/grid": "^6.1.4",
+    "@rmwc/textfield": "^6.1.4",
+    "@rmwc/top-app-bar": "^6.1.4",
+    "@rmwc/typography": "^6.1.4",
+    "axios": "^0.21.2",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "firebase": "^8.2.3",
+    "mongoose": "^6.0.4",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-firebase-hooks": "^2.2.0",
+    "react-router-dom": "^5.2.1",
+    "react-scripts": "^4.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "server": "node server/index.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

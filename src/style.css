@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.chat {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+
+.chat-header, .chat-controls {
+  display: flex;
+  align-items: center;
+}
+
+.chat-controls {
+
+}
+
+.chat-controls__file {
+  text-align: center;
+}
+
+.chat-controls__file input{
+  display: none;
+}
+
+.chat-content {
+
+}
+
+.chat-content-messeges {
+  margin: 10px 0;
+  height: 60vh;
+  border-radius: 5%;
+  border: 1px solid rgb(129, 129, 129);
+}
+
+.message {
+  display: flex;
+}
+
+.message.sent {
+  justify-content: flex-start;
+}
+
+.message.received {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message.user img {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+}
