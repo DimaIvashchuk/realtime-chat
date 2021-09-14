@@ -10,21 +10,33 @@ import { Context } from '../index';
 import Message from './Message';
 
 const Chat = () => {
-  const {db, auth} = useContext(Context);
+  const {db, auth, storage} = useContext(Context);
   const [message, setMessage] = useState('');
   const [room, setRoom] = useState(null);
   const [availableRooms, setAvailableRooms] = useState(null);
   const [roomNameToJoin, setRoomNameToJoin] = useState('');
-  const fileRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const chatRef = useRef(null);
   const messageDb = db.collection('messages');
 
-  const query = messageDb.where('room', '==', room);
+  const query = messageDb.where('room', '==', room).orderBy('createdAt');
   const [messages] = useCollectionData(query, { idField: 'id' });
-  console.log(messages);
 
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
-    const { photoURL, uid} = auth.currentUser;
+    let fileUrl = '';
+    if (fileInputRef.current.files[0]) {
+      const file = fileInputRef.current.files[0];
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(file.name);
+      
+      await fileRef.put(file);
+
+      fileUrl = await fileRef.getDownloadURL();
+
+      fileInputRef.current.value = null;
+    }
+    const { photoURL, uid, displayName } = auth.currentUser;
     const createdAt = firebase.firestore.FieldValue.serverTimestamp();
 
     messageDb.add({
@@ -32,7 +44,9 @@ const Chat = () => {
       photoURL,
       text: message,
       createdAt,
-      room
+      room,
+      username: displayName,
+      fileUrl
     });
   };
 
@@ -44,7 +58,7 @@ const Chat = () => {
       return;
     }
 
-    const { data: serverResponce } = await axios.post('http://localhost:5000/api/v1/room', {
+    const { data: serverResponce } = await axios.post('https://us-central1-dev-temp-de742.cloudfunctions.net/app/api/v1/room', {
       title: roomNameToJoin
     });
 
@@ -54,18 +68,10 @@ const Chat = () => {
   }
 
   useEffect(() => {
-    if (room !== null) {
-
-    }
-  }, [room]);
-
-  useEffect(() => {
-    console.log('a')
     const getRoomsData = async () => {
-      const { data: serverResponce } = await axios.get('http://localhost:5000/api/v1/room');
+      const { data: serverResponce } = await axios.get('https://us-central1-dev-temp-de742.cloudfunctions.net/app/api/v1/room');
 
       if (serverResponce.status === 'ok') {
-        console.log(serverResponce, serverResponce.data.map(room => room.title))
         setAvailableRooms(serverResponce.data.map(room => room.title));
       }
     }
@@ -74,6 +80,10 @@ const Chat = () => {
     
     return () => {};
   }, []);
+
+  useEffect(() => {
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [messages]);
  
   return (
     <div className="chat">
@@ -88,8 +98,8 @@ const Chat = () => {
       </form>
       <div className="chat-content">
         <Typography use="headline3">{room}</Typography>
-        <div className="chat-content-messeges">
-          {messages && messages.map(element => <Message message={element}/>)}
+        <div className="chat-content-messeges" ref={chatRef}>
+          {messages && messages.map(element => <Message message={element} key={element.id}/>)}
         </div>
       </div>
       <div className="chat-controls">
@@ -102,7 +112,7 @@ const Chat = () => {
           />
           <label className="chat-controls__file" style={{ height: '40px', width: '10%', borderLeft: '1px solid #505050' }} >
             Choose the file
-            <input type="file" ref={fileRef} />
+            <input type="file" ref={fileInputRef} />
           </label>
           <Button
             style={{ backgroundColor: '#ae00c5', height: '40px', width: '20%' }}

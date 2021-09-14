@@ -11,11 +11,7 @@
     "@rmwc/top-app-bar": "^6.1.4",
     "@rmwc/typography": "^6.1.4",
     "axios": "^0.21.2",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
     "firebase": "^8.2.3",
-    "mongoose": "^6.0.4",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-firebase-hooks": "^2.2.0",
@@ -24,8 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "server": "node server/index.js"
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": [

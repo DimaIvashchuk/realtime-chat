@@ -25,12 +25,14 @@ firebase.initializeApp({
 });
 
 const auth = firebase.auth();
-const db = firebase.firestore()
+const db = firebase.firestore();
+const storage = firebase.storage();
 
 render(
   <Context.Provider value={{
     auth,
-    db
+    db,
+    storage
   }}>
     <UserRoutes />
   </Context.Provider>,
